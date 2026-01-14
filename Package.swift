@@ -22,7 +22,7 @@ var cSettings: [CSetting] = [
     .define("SQLITE_HAS_CODEC"),
 ]
 var dependencies: [PackageDescription.Package.Dependency] = [
-    .package(url: "https://github.com/sqlcipher/SQLCipher.swift.git", branch: "master"),
+    .package(url: "https://github.com/sqlcipher/SQLCipher.swift.git", from: "4.12.0"),
 ]
 
 // Don't rely on those environment variables. They are ONLY testing conveniences:
