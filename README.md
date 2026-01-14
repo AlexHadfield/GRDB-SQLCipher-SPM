@@ -15,7 +15,7 @@ https://github.com/AlexHadfield/GRDB-SQLCipher-SPM.git
 Or in your `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/AlexHadfield/GRDB-SQLCipher-SPM.git", from: "4.7.9.0")
+.package(url: "https://github.com/AlexHadfield/GRDB-SQLCipher-SPM.git", from: "7.4.0")
 ```
 
 Then use GRDB with encryption:
@@ -34,18 +34,20 @@ See [Encryption](#encryption) for more details on using encrypted databases.
 
 ## Versioning
 
-This fork uses a **4-part version** format: `{SQLCipher}.{GRDB}`
+This fork uses **semantic versioning** that encodes both GRDB and SQLCipher major versions:
 
-| Version | SQLCipher | GRDB |
-|---------|-----------|------|
-| `4.7.9.0` | 4.x | 7.9.0 |
-| `4.7.10.0` | 4.x | 7.10.0 |
-| `5.7.10.0` | 5.x | 7.10.0 |
+| Version | GRDB | SQLCipher |
+|---------|------|-----------|
+| `7.4.0` | 7.x | 4.x |
+| `7.4.1` | 7.x (newer) | 4.x |
+| `7.5.0` | 7.x | 5.x |
+| `8.4.0` | 8.x | 4.x |
 
-- **First number (major):** SQLCipher major version. A bump here means a new SQLCipher major version (potential breaking change).
-- **Remaining numbers:** The upstream GRDB version this fork is based on.
+- **Major:** GRDB major version
+- **Minor:** SQLCipher major version
+- **Patch:** Fork releases (upstream merges, fixes)
 
-Using `from: "4.0.0"` ensures you stay on SQLCipher 4.x and won't accidentally upgrade to SQLCipher 5 when it releases.
+Using `from: "7.4.0"` ensures you stay on GRDB 7.x with SQLCipher 4.x. See [release notes](https://github.com/AlexHadfield/GRDB-SQLCipher-SPM/releases) for specific upstream versions.
 
 ---
 
@@ -65,7 +67,7 @@ Using `from: "4.0.0"` ensures you stay on SQLCipher 4.x and won't accidentally u
     <a href="https://github.com/groue/GRDB.swift/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/github/license/groue/GRDB.swift.svg?maxAge=2592000"></a>
 </p>
 
-**Current version**: 4.7.9.0 (SQLCipher 4.x + [GRDB 7.9.0](https://github.com/groue/GRDB.swift/tree/v7.9.0)) • [Migrating From GRDB 6 to GRDB 7](Documentation/GRDB7MigrationGuide.md)
+**Current version**: 7.4.0 ([GRDB 7.9.0](https://github.com/groue/GRDB.swift/tree/v7.9.0) + SQLCipher 4.x) • [Migrating From GRDB 6 to GRDB 7](Documentation/GRDB7MigrationGuide.md)
 
 **Requirements**: iOS 13.0+ / macOS 10.15+ / tvOS 13.0+ / watchOS 7.0+ &bull; Swift 6.1+ / Xcode 16.3+
 
@@ -406,7 +408,7 @@ Or add it to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/AlexHadfield/GRDB-SQLCipher-SPM.git", from: "4.7.9.0")
+    .package(url: "https://github.com/AlexHadfield/GRDB-SQLCipher-SPM.git", from: "7.4.0")
 ]
 ```
 
