@@ -2,6 +2,7 @@
 // Import C SQLite functions
 #if GRDBCIPHER // CocoaPods (SQLCipher subspec)
 import SQLCipher
+import GRDBSQLCipherShim
 #elseif GRDBFRAMEWORK // GRDB.xcodeproj or CocoaPods (standard subspec)
 import SQLite3
 #elseif GRDBCUSTOMSQLITE // GRDBCustom Framework
