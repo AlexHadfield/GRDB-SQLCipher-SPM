@@ -94,6 +94,7 @@ let package = Package(
                 .copy("GRDBTests/Betty.jpeg"),
                 .copy("GRDBTests/InflectionsTests.json"),
                 .copy("GRDBTests/Issue1383.sqlite"),
+                .copy("GRDBTests/db.SQLCipher3"),
             ],
             cSettings: cSettings,
             swiftSettings: swiftSettings + [
