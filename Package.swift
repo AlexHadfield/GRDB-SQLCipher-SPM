@@ -78,7 +78,6 @@ let package = Package(
             dependencies: ["GRDB"],
             path: "Tests",
             exclude: [
-                "CocoaPods",
                 "Crash",
                 "CustomSQLite",
                 "GRDBManualInstall",

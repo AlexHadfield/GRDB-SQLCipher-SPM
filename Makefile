@@ -8,7 +8,9 @@
 # make distclean - Restore repository to a pristine state
 
 default: test
-smokeTest: test_framework_GRDBiOS_maxTarget test_framework_GRDBiOS_minTarget test_framework_SQLCipher3 test_framework_SQLCipher4Encrypted test_framework_GRDBCustomSQLiteiOS_maxTarget test_SPM
+
+# For this SQLCipher SPM fork, CocoaPods tests are removed
+smokeTest: test_framework_GRDBiOS_maxTarget test_framework_GRDBiOS_minTarget test_framework_GRDBCustomSQLiteiOS_maxTarget test_SPM
 
 # =====
 # Tools
@@ -74,13 +76,13 @@ endif
 test: test_framework test_archive test_install test_demo_apps
 
 test_framework: test_framework_darwin
-test_framework_darwin: test_framework_GRDB test_framework_GRDBCustom test_framework_SQLCipher test_SPM
+test_framework_darwin: test_framework_GRDB test_framework_GRDBCustom test_SPM
+# Note: CocoaPods tests (test_framework_SQLCipher) are removed in this SPM fork
 test_framework_GRDB: test_framework_GRDBOSX test_framework_GRDBiOS test_framework_GRDBtvOS
 test_framework_GRDBCustom: test_framework_GRDBCustomSQLiteOSX test_framework_GRDBCustomSQLiteiOS
-test_framework_SQLCipher: test_framework_SQLCipher3 test_framework_SQLCipher3Encrypted test_framework_SQLCipher4 test_framework_SQLCipher4Encrypted
 test_archive: test_universal_xcframework
-test_install: test_install_manual test_install_SPM test_install_customSQLite test_install_GRDB_CocoaPods
-test_CocoaPodsLint: test_CocoaPodsLint_GRDB
+test_install: test_install_manual test_install_SPM test_install_customSQLite
+# Note: CocoaPods install tests are removed in this SPM fork
 test_demo_apps: test_GRDBDemo
 
 test_framework_GRDBOSX:
