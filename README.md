@@ -1,3 +1,33 @@
+# GRDB + SQLCipher via Swift Package Manager
+
+> **This is a fork of [GRDB.swift](https://github.com/groue/GRDB.swift) that provides SQLCipher encryption support via Swift Package Manager.**
+
+The official GRDB.swift library requires CocoaPods for SQLCipher integration because Xcode doesn't support SPM package traits. This fork provides a drop-in replacement that uses the official [SQLCipher.swift](https://github.com/sqlcipher/SQLCipher.swift) package from Zetetic.
+
+## Quick Start
+
+Add this package to your Xcode project:
+
+```
+https://github.com/AlexHadfield/GRDB-SQLCipher-SPM.git
+```
+
+Then use GRDB with encryption:
+
+```swift
+import GRDB
+
+var config = Configuration()
+config.prepareDatabase { db in
+    try db.usePassphrase("your-secret-passphrase")
+}
+let dbQueue = try DatabaseQueue(path: dbPath, configuration: config)
+```
+
+See [Encryption](#encryption) for more details on using encrypted databases.
+
+---
+
 <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/groue/GRDB.swift/master/GRDB~dark.png">
     <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/groue/GRDB.swift/master/GRDB.png">
@@ -12,18 +42,17 @@
 <p align="center">
     <a href="https://developer.apple.com/swift/"><img alt="Swift 6.1" src="https://img.shields.io/badge/swift-6.1-orange.svg?style=flat"></a>
     <a href="https://github.com/groue/GRDB.swift/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/github/license/groue/GRDB.swift.svg?maxAge=2592000"></a>
-    <a href="https://github.com/groue/GRDB.swift/actions/workflows/CI.yml"><img alt="CI Status" src="https://github.com/groue/GRDB.swift/actions/workflows/CI.yml/badge.svg?branch=master"></a>
 </p>
 
-**Latest release**: December 13, 2025 • [version 7.9.0](https://github.com/groue/GRDB.swift/tree/v7.9.0) • [CHANGELOG](CHANGELOG.md) • [Migrating From GRDB 6 to GRDB 7](Documentation/GRDB7MigrationGuide.md)
+**Based on**: [GRDB.swift v7.9.0](https://github.com/groue/GRDB.swift/tree/v7.9.0) • [CHANGELOG](CHANGELOG.md) • [Migrating From GRDB 6 to GRDB 7](Documentation/GRDB7MigrationGuide.md)
 
-**Requirements**: iOS 13.0+ / macOS 10.15+ / tvOS 13.0+ / watchOS 7.0+ &bull; SQLite 3.20.0+ &bull; Swift 6.1+ / Xcode 16.3+
+**Requirements**: iOS 13.0+ / macOS 10.15+ / tvOS 13.0+ / watchOS 7.0+ &bull; Swift 6.1+ / Xcode 16.3+
 
-**Contact**:
+**Upstream Contact**:
 
 - Release announcements and usage tips: follow [@groue@hachyderm.io](https://hachyderm.io/@groue) on Mastodon.
-- Report bugs in a [Github issue](https://github.com/groue/GRDB.swift/issues/new). Make sure you check the [existing issues](https://github.com/groue/GRDB.swift/issues?q=is%3Aopen) first.
-- A question? Looking for advice? Do you wonder how to contribute? Fancy a chat? Go to the [GitHub discussions](https://github.com/groue/GRDB.swift/discussions), or the [GRDB forums](https://forums.swift.org/c/related-projects/grdb).
+- GRDB bugs: [Github issues](https://github.com/groue/GRDB.swift/issues/new)
+- Questions: [GitHub discussions](https://github.com/groue/GRDB.swift/discussions), or the [GRDB forums](https://forums.swift.org/c/related-projects/grdb).
 
 
 ## What is GRDB?
@@ -342,65 +371,27 @@ Documentation
 Installation
 ============
 
-**The installation procedures below have GRDB use the version of SQLite that ships with the target operating system.**
-
-See [Encryption](#encryption) for the installation procedure of GRDB with SQLCipher.
-
-See [Custom SQLite builds](Documentation/CustomSQLiteBuilds.md) for the installation procedure of GRDB with a customized build of SQLite.
-
+This fork uses SQLCipher for database encryption via Swift Package Manager.
 
 ## Swift Package Manager
 
-The [Swift Package Manager](https://swift.org/package-manager/) automates the distribution of Swift code. To use GRDB with SPM, add a dependency to `https://github.com/groue/GRDB.swift.git`
+Add a dependency to your project using Xcode:
 
-GRDB offers two libraries, `GRDB` and `GRDB-dynamic`. Pick only one. When in doubt, prefer `GRDB`. The `GRDB-dynamic` library can reveal useful if you are going to link it with multiple targets within your app and only wish to link to a shared, dynamic framework once. See [How to link a Swift Package as dynamic](https://forums.swift.org/t/how-to-link-a-swift-package-as-dynamic/32062) for more information.
+1. File → Add Package Dependencies...
+2. Enter the repository URL: `https://github.com/AlexHadfield/GRDB-SQLCipher-SPM.git`
+3. Select the `GRDB` library
 
-> **Note**: Linux support is provided by contributors. It is not automatically tested, and not officially maintained. If you notice a build or runtime failure on Linux, please open a pull request with the necessary fix, thank you!
+Or add it to your `Package.swift`:
 
-
-## CocoaPods
-
-[CocoaPods](http://cocoapods.org/) is a dependency manager for Xcode projects. To use GRDB with CocoaPods (version 1.2 or higher), specify in your `Podfile`:
-
-```ruby
-pod 'GRDB.swift'
+```swift
+dependencies: [
+    .package(url: "https://github.com/AlexHadfield/GRDB-SQLCipher-SPM.git", branch: "main")
+]
 ```
 
-GRDB can be installed as a framework, or a static library.
+This package offers two libraries, `GRDB` and `GRDB-dynamic`. Pick only one. When in doubt, prefer `GRDB`. The `GRDB-dynamic` library can be useful if you are going to link it with multiple targets within your app and only wish to link to a shared, dynamic framework once. See [How to link a Swift Package as dynamic](https://forums.swift.org/t/how-to-link-a-swift-package-as-dynamic/32062) for more information.
 
-**Important Note for CocoaPods installation**
-
-Due to an [issue](https://github.com/CocoaPods/CocoaPods/issues/11839) in CocoaPods, it is currently not possible to deploy new versions of GRDB to CocoaPods. The last version available on CocoaPods is 6.24.1. To install later versions of GRDB using CocoaPods, use one of the following workarounds:
-
-- Depend on the `GRDB7` branch. This is more or less equivalent to what `pod 'GRDB.swift', '~> 7.0'` would normally do, if CocoaPods would accept new GRDB versions to be published:
-
-    ```ruby
-    # Can't use semantic versioning due to https://github.com/CocoaPods/CocoaPods/issues/11839
-    pod 'GRDB.swift', git: 'https://github.com/groue/GRDB.swift.git', branch: 'GRDB7'
-    ```
-
-- Depend on a specific version explicitly (Replace the tag with the version you want to use):
-
-    ```ruby
-    # Can't use semantic versioning due to https://github.com/CocoaPods/CocoaPods/issues/11839
-    # Replace the tag with the tag that you want to use.
-    pod 'GRDB.swift', git: 'https://github.com/groue/GRDB.swift.git', tag: 'v6.29.0' 
-    ```
-
-## Carthage
-
-[Carthage](https://github.com/Carthage/Carthage) is **unsupported**. For some context about this decision, see [#433](https://github.com/groue/GRDB.swift/issues/433).
-
-
-## Manually
-
-1. [Download](https://github.com/groue/GRDB.swift/releases) a copy of GRDB, or clone its repository and make sure you checkout the latest tagged version.
-
-2. Embed the `GRDB.xcodeproj` project in your own project.
-
-3. Add the `GRDB` target in the **Target Dependencies** section of the **Build Phases** tab of your application target (extension target for WatchOS).
-
-4. Add the `GRDB.framework` to the **Embedded Binaries** section of the **General**  tab of your application target (extension target for WatchOS).
+> **Note**: This fork is for Apple platforms only. For the official GRDB without SQLCipher, or for Linux support, use the [upstream GRDB.swift](https://github.com/groue/GRDB.swift).
 
 
 Database Connections
@@ -4587,21 +4578,9 @@ try Player.customRequest().fetchAll(db) // [Player]
 Encryption
 ==========
 
-**GRDB can encrypt your database with [SQLCipher](http://sqlcipher.net) v3.4+.**
+**This fork includes [SQLCipher](http://sqlcipher.net) encryption support out of the box.**
 
-Use [CocoaPods](http://cocoapods.org/), and specify in your `Podfile`:
-
-```ruby
-# GRDB with SQLCipher 4
-pod 'GRDB.swift/SQLCipher'
-pod 'SQLCipher', '~> 4.0'
-
-# GRDB with SQLCipher 3
-pod 'GRDB.swift/SQLCipher'
-pod 'SQLCipher', '~> 3.4'
-```
-
-Make sure you remove any existing `pod 'GRDB.swift'` from your Podfile. `GRDB.swift/SQLCipher` must be the only active GRDB pod in your whole project, or you will face linker or runtime errors, due to the conflicts between SQLCipher and the system SQLite.
+SQLCipher is included via the official [SQLCipher.swift](https://github.com/sqlcipher/SQLCipher.swift) package from Zetetic. No additional setup is required beyond adding this package as a dependency.
 
 - [Creating or Opening an Encrypted Database](#creating-or-opening-an-encrypted-database)
 - [Changing the Passphrase of an Encrypted Database](#changing-the-passphrase-of-an-encrypted-database)

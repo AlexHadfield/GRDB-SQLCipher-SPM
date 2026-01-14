@@ -1,0 +1,4 @@
+module GRDBSQLCipherShim {
+    header "SQLCipher_config.h"
+    export *
+}

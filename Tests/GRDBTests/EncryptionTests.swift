@@ -707,7 +707,6 @@ class EncryptionTests: GRDBTestCase {
             else { XCTFail("Unknown SQLCipher version"); return }
         
         if cipherMajorVersion >= 4 {
-            let testBundle = Bundle(for: type(of: self))
             let path = testBundle.url(forResource: "db", withExtension: "SQLCipher3")!.path
             var configuration = Configuration()
             configuration.prepareDatabase { db in

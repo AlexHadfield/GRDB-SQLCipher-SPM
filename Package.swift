@@ -15,9 +15,15 @@ let darwinPlatforms: [Platform] = [
 var swiftSettings: [SwiftSetting] = [
     .define("SQLITE_ENABLE_FTS5"),
     .define("SQLITE_ENABLE_SNAPSHOT"),
+    .define("SQLITE_HAS_CODEC"),
+    .define("GRDBCIPHER"),
 ]
-var cSettings: [CSetting] = []
-var dependencies: [PackageDescription.Package.Dependency] = []
+var cSettings: [CSetting] = [
+    .define("SQLITE_HAS_CODEC"),
+]
+var dependencies: [PackageDescription.Package.Dependency] = [
+    .package(url: "https://github.com/sqlcipher/SQLCipher.swift.git", branch: "master"),
+]
 
 // Don't rely on those environment variables. They are ONLY testing conveniences:
 // $ SQLITE_ENABLE_PREUPDATE_HOOK=1 make test_SPM
@@ -46,19 +52,22 @@ let package = Package(
         .watchOS(.v7),
     ],
     products: [
-        .library(name: "GRDBSQLite", targets: ["GRDBSQLite"]),
         .library(name: "GRDB", targets: ["GRDB"]),
         .library(name: "GRDB-dynamic", type: .dynamic, targets: ["GRDB"]),
     ],
     dependencies: dependencies,
     targets: [
-        .systemLibrary(
-            name: "GRDBSQLite",
-            providers: [.apt(["libsqlite3-dev"])]),
+        .target(
+            name: "GRDBSQLCipherShim",
+            dependencies: [
+                .product(name: "SQLCipher", package: "SQLCipher.swift"),
+            ],
+            path: "Sources/GRDBSQLCipherShim",
+            publicHeadersPath: "include"),
         .target(
             name: "GRDB",
             dependencies: [
-                .target(name: "GRDBSQLite"),
+                "GRDBSQLCipherShim",
             ],
             path: "GRDB",
             resources: [.copy("PrivacyInfo.xcprivacy")],
@@ -69,7 +78,6 @@ let package = Package(
             dependencies: ["GRDB"],
             path: "Tests",
             exclude: [
-                "CocoaPods",
                 "Crash",
                 "CustomSQLite",
                 "GRDBManualInstall",
@@ -85,6 +93,7 @@ let package = Package(
                 .copy("GRDBTests/Betty.jpeg"),
                 .copy("GRDBTests/InflectionsTests.json"),
                 .copy("GRDBTests/Issue1383.sqlite"),
+                .copy("GRDBTests/db.SQLCipher3"),
             ],
             cSettings: cSettings,
             swiftSettings: swiftSettings + [
