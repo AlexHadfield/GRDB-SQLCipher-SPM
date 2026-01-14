@@ -12,6 +12,12 @@ Add this package to your Xcode project:
 https://github.com/AlexHadfield/GRDB-SQLCipher-SPM.git
 ```
 
+Or in your `Package.swift`:
+
+```swift
+.package(url: "https://github.com/AlexHadfield/GRDB-SQLCipher-SPM.git", from: "4.7.9.0")
+```
+
 Then use GRDB with encryption:
 
 ```swift
@@ -25,6 +31,21 @@ let dbQueue = try DatabaseQueue(path: dbPath, configuration: config)
 ```
 
 See [Encryption](#encryption) for more details on using encrypted databases.
+
+## Versioning
+
+This fork uses a **4-part version** format: `{SQLCipher}.{GRDB}`
+
+| Version | SQLCipher | GRDB |
+|---------|-----------|------|
+| `4.7.9.0` | 4.x | 7.9.0 |
+| `4.7.10.0` | 4.x | 7.10.0 |
+| `5.7.10.0` | 5.x | 7.10.0 |
+
+- **First number (major):** SQLCipher major version. A bump here means a new SQLCipher major version (potential breaking change).
+- **Remaining numbers:** The upstream GRDB version this fork is based on.
+
+Using `from: "4.0.0"` ensures you stay on SQLCipher 4.x and won't accidentally upgrade to SQLCipher 5 when it releases.
 
 ---
 
@@ -44,7 +65,7 @@ See [Encryption](#encryption) for more details on using encrypted databases.
     <a href="https://github.com/groue/GRDB.swift/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/github/license/groue/GRDB.swift.svg?maxAge=2592000"></a>
 </p>
 
-**Based on**: [GRDB.swift v7.9.0](https://github.com/groue/GRDB.swift/tree/v7.9.0) • [CHANGELOG](CHANGELOG.md) • [Migrating From GRDB 6 to GRDB 7](Documentation/GRDB7MigrationGuide.md)
+**Current version**: 4.7.9.0 (SQLCipher 4.x + [GRDB 7.9.0](https://github.com/groue/GRDB.swift/tree/v7.9.0)) • [Migrating From GRDB 6 to GRDB 7](Documentation/GRDB7MigrationGuide.md)
 
 **Requirements**: iOS 13.0+ / macOS 10.15+ / tvOS 13.0+ / watchOS 7.0+ &bull; Swift 6.1+ / Xcode 16.3+
 
@@ -385,7 +406,7 @@ Or add it to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/AlexHadfield/GRDB-SQLCipher-SPM.git", branch: "main")
+    .package(url: "https://github.com/AlexHadfield/GRDB-SQLCipher-SPM.git", from: "4.7.9.0")
 ]
 ```
 
